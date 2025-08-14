@@ -29,16 +29,16 @@ export default function Header() {
     <>
       <header className="bg-white dark:bg-gray-900 shadow-sm border-b dark:border-gray-700 sticky top-0 z-50 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-18">
+          <div className="flex items-center justify-between h-24">
             {/* Logo and Location */}
             <div className="flex items-center space-x-4">
               <Link href="/" className="flex items-center group ml-2">
-                <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-300 animate-logo-breathe group-hover:animate-logo-pulse">
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:rotate-[2deg]">
                   <Image
                     src="/logo.png"
                     alt="Shwikky Logo"
                     fill
-                    className="object-cover transition-transform duration-300"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
               </Link>
@@ -48,7 +48,7 @@ export default function Header() {
               </div>
             </div>
 
-            <div className="flex-1 max-w-sm mx-6">
+            <div className="flex-1 max-w-md mx-6">
               <SearchDropdown />
             </div>
 
@@ -56,7 +56,10 @@ export default function Header() {
             <div className="flex items-center space-x-3 mr-2">
               <ThemeToggle />
 
-              <HeaderDropdown onOffersClick={() => setIsOffersOpen(true)} onHelpClick={() => setIsHelpOpen(true)} />
+              <HeaderDropdown
+                onOffersClick={() => setIsOffersOpen(true)}
+                onHelpClick={() => setIsHelpOpen(true)}
+              />
 
               <Button
                 variant="ghost"
