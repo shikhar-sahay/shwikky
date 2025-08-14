@@ -51,24 +51,24 @@ export default function MenuSection({ section, restaurantId, restaurantName }: M
   return (
     <div className="mb-8">
       <div
-        className="flex items-center justify-between p-6 bg-white rounded-t-xl cursor-pointer hover:bg-gray-50 transition-colors border border-gray-100"
+        className="flex items-center justify-between p-6 bg-gray-800 rounded-t-xl cursor-pointer hover:bg-gray-700 transition-colors border border-gray-700"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <h3 className="text-2xl font-bold text-gray-900 font-poppins">
+        <h3 className="text-2xl font-bold text-gray-100 font-poppins">
           {section.category} ({section.itemCount})
         </h3>
-        <div className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-          {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+        <div className="p-2 rounded-full hover:bg-gray-700 transition-colors">
+          {isExpanded ? <ChevronUp className="w-5 h-5 text-gray-100" /> : <ChevronDown className="w-5 h-5 text-gray-100" />}
         </div>
       </div>
 
       {isExpanded && (
-        <div className="bg-white rounded-b-xl shadow-xl border-x border-b border-gray-100">
+        <div className="bg-gray-800 rounded-b-xl shadow-xl border-x border-b border-gray-700">
           {section.items.map((item, index) => (
             <div
               key={item.id}
-              className={`p-6 hover:bg-gray-50 transition-colors ${
-                index !== section.items.length - 1 ? "border-b border-gray-100" : ""
+              className={`p-6 hover:bg-gray-700 transition-colors ${
+                index !== section.items.length - 1 ? "border-b border-gray-700" : ""
               }`}
             >
               <div className="flex items-start justify-between">
@@ -76,10 +76,10 @@ export default function MenuSection({ section, restaurantId, restaurantName }: M
                   <div className="flex items-center space-x-3 mb-3">
                     <div
                       className={`w-5 h-5 border-2 flex items-center justify-center ${
-                        item.veg ? "border-green-500" : "border-red-500"
+                        item.veg ? "border-green-400" : "border-red-400"
                       }`}
                     >
-                      <div className={`w-2.5 h-2.5 rounded-full ${item.veg ? "bg-green-500" : "bg-red-500"}`} />
+                      <div className={`w-2.5 h-2.5 rounded-full ${item.veg ? "bg-green-400" : "bg-red-400"}`} />
                     </div>
                     {item.bestseller && (
                       <Badge className="bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs px-2 py-1">
@@ -88,19 +88,19 @@ export default function MenuSection({ section, restaurantId, restaurantName }: M
                     )}
                   </div>
 
-                  <h4 className="font-bold text-xl text-gray-900 mb-3 font-poppins">{item.name}</h4>
+                  <h4 className="font-bold text-xl text-gray-100 mb-3 font-poppins">{item.name}</h4>
 
-                  <p className="text-2xl font-bold text-gray-900 mb-3">₹{item.price}</p>
+                  <p className="text-2xl font-bold text-yellow-400 mb-3">₹{item.price}</p>
 
                   <div className="flex items-center space-x-2 mb-4">
                     <div className="flex items-center space-x-1">
-                      <Star className="w-4 h-4 fill-current text-green-500" />
-                      <span className="text-sm font-medium">{item.rating}</span>
-                      <span className="text-sm text-gray-500">({item.ratingCount})</span>
+                      <Star className="w-4 h-4 fill-current text-green-400" />
+                      <span className="text-sm font-medium text-gray-100">{item.rating}</span>
+                      <span className="text-sm text-gray-400">({item.ratingCount})</span>
                     </div>
                   </div>
 
-                  <p className="text-gray-600 text-sm mb-6 leading-relaxed">{item.description}</p>
+                  <p className="text-gray-300 text-sm mb-6 leading-relaxed">{item.description}</p>
 
                   <div className="flex items-center space-x-4">
                     <Button
@@ -111,7 +111,7 @@ export default function MenuSection({ section, restaurantId, restaurantName }: M
                       ADD
                     </Button>
                     {item.customizable && (
-                      <span className="text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded-full">Customisable</span>
+                      <span className="text-xs text-gray-200 bg-gray-700 px-3 py-1 rounded-full">Customisable</span>
                     )}
                   </div>
                 </div>

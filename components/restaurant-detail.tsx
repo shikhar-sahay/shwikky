@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Star, Clock, MapPin, ChevronLeft, ChevronRight, Search, Percent, ArrowLeft } from "lucide-react"
+import { Star, Clock, MapPin, ChevronLeft, ChevronRight, Search, Percent, ArrowLeft, Plus, Minus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
@@ -9,6 +9,7 @@ import MenuSection from "@/components/menu-section"
 import Link from "next/link"
 import { restaurantsData } from "@/data/restaurants"
 import type { RestaurantData } from "@/types/restaurant"
+import { useCart } from "@/contexts/cart-context"
 
 interface RestaurantDetailProps {
   restaurantId: string
@@ -19,6 +20,7 @@ export default function RestaurantDetail({ restaurantId }: RestaurantDetailProps
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
+  const { dispatch, cartItems } = useCart()
 
   useEffect(() => {
     setLoading(true)
@@ -88,6 +90,28 @@ export default function RestaurantDetail({ restaurantId }: RestaurantDetailProps
     setRestaurant(formattedRestaurant)
     setLoading(false)
   }, [restaurantId])
+
+  const addToCart = (item: { id: string; name: string; price: number; image: string; veg: boolean }) => {
+    dispatch({
+      type: "ADD_ITEM",
+      payload: {
+        id: item.id,
+        restaurantId: restaurant!.id,
+        restaurantName: restaurant!.name,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        veg: item.veg,
+      },
+    })
+  }
+
+  const removeFromCart = (itemId: string) => {
+    dispatch({
+      type: "REMOVE_ITEM",
+      payload: { id: itemId },
+    })
+  }
 
   if (loading) return <div className="text-center py-12 text-gray-100">Loading restaurant details...</div>
 
@@ -227,39 +251,68 @@ export default function RestaurantDetail({ restaurantId }: RestaurantDetailProps
           </div>
 
           <div className="flex space-x-6 overflow-x-auto pb-4">
-            {restaurant.topPicks.map((item) => (
-              <Card
-                key={item.id}
-                className="min-w-[350px] bg-gradient-to-br from-teal-900 via-gray-800 to-gray-700 text-white overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-              >
-                <div className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-3">
-                        <div
-                          className={`w-4 h-4 border-2 flex items-center justify-center ${
-                            item.veg ? "border-green-400" : "border-red-400"
-                          }`}
-                        >
-                          <div className={`w-2 h-2 rounded-full ${item.veg ? "bg-green-400" : "bg-red-400"}`} />
+            {restaurant.topPicks.map((item) => {
+              const quantity = cartItems?.[item.id]?.quantity || 0
+
+              return (
+                <Card
+                  key={item.id}
+                  className="min-w-[350px] bg-gradient-to-br from-teal-900 via-gray-800 to-gray-700 text-white overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <div className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-3">
+                          <div
+                            className={`w-4 h-4 border-2 flex items-center justify-center ${
+                              item.veg ? "border-green-400" : "border-red-400"
+                            }`}
+                          >
+                            <div className={`w-2 h-2 rounded-full ${item.veg ? "bg-green-400" : "bg-red-400"}`} />
+                          </div>
                         </div>
+
+                        <h3 className="font-bold text-xl mb-3 font-poppins">{item.name}</h3>
+                        <p className="text-gray-300 text-sm mb-4 leading-relaxed">{item.description}</p>
+                        <p className="text-2xl font-bold mb-4 text-yellow-400">₹{item.price}</p>
+
+                        {quantity === 0 ? (
+                          <Button
+                            onClick={() => addToCart(item)}
+                            className="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-8 py-2 rounded-lg transition-all transform hover:scale-105"
+                          >
+                            ADD
+                          </Button>
+                        ) : (
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              onClick={() => removeFromCart(item.id)}
+                              className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded-lg"
+                            >
+                              <Minus className="w-4 h-4" />
+                            </Button>
+                            <span className="px-3 py-1 font-semibold bg-gray-800 rounded-lg transition-transform animate-pulse">
+                              {quantity}
+                            </span>
+                            <Button
+                              onClick={() => addToCart(item)}
+                              className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded-lg"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        )}
                       </div>
-                      <h3 className="font-bold text-xl mb-3 font-poppins">{item.name}</h3>
-                      <p className="text-gray-300 text-sm mb-4 leading-relaxed">{item.description}</p>
-                      <p className="text-2xl font-bold mb-4 text-yellow-400">₹{item.price}</p>
-                      <Button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-8 py-2 rounded-lg transition-colors">
-                        ADD
-                      </Button>
+                      <img
+                        src={item.image || "/placeholder.svg"}
+                        alt={item.name}
+                        className="w-28 h-28 object-cover rounded-xl ml-4 shadow-lg"
+                      />
                     </div>
-                    <img
-                      src={item.image || "/placeholder.svg"}
-                      alt={item.name}
-                      className="w-28 h-28 object-cover rounded-xl ml-4 shadow-lg"
-                    />
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              )
+            })}
           </div>
         </div>
 
