@@ -134,7 +134,7 @@ export default function RestaurantList() {
   return (
     <section className="py-8 bg-background transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-foreground dark:text-green-400 mb-8 font-poppins animate-fade-in-up">
+        <h2 className="text-3xl font-bold text-black dark:text-[#25c2af] mb-8 font-poppins animate-fade-in-up">
           Restaurants with online food delivery in {selectedCity}
         </h2>
 

@@ -69,6 +69,7 @@ const config: Config = {
           800: "#115e59",
           900: "#134e4a",
         },
+        tealCustom: "#25c2af", // added custom color
       },
       borderRadius: {
         lg: "var(--radius)",
