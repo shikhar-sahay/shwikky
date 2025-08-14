@@ -33,18 +33,18 @@ export default function Header() {
             {/* Logo and Location */}
             <div className="flex items-center space-x-4">
               <Link href="/" className="flex items-center group ml-2">
-                <div className="relative w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-lg transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-[3deg]">
+                <div className="relative w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-lg transition-all duration-300 transform hover:animate-breathe">
                   <Image
                     src="/logo.png"
                     alt="Shwikky Logo"
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-125"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
               </Link>
 
-              <div className="hidden md:block text-gray-800 dark:text-gray-200">
-                <LocationDropdown />
+              <div className="hidden md:block">
+                <LocationDropdown className="text-gray-700 hover:text-[#25c2af] dark:text-gray-300 dark:hover:text-[#25c2af] transition-colors duration-200" />
               </div>
             </div>
 

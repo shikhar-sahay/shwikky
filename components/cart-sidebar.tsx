@@ -25,14 +25,19 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   return (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity" onClick={onClose} />
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity"
+        onClick={onClose}
+      />
 
       {/* Sidebar */}
-      <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 flex flex-col">
+      <div className="fixed right-0 top-0 h-full w-96 bg-white dark:bg-gray-900 shadow-2xl z-50 transform transition-transform duration-300 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-bold font-poppins">Your Cart</h2>
-          <Button variant="ghost" size="sm" onClick={onClose}>
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-bold font-poppins text-gray-900 dark:text-gray-100">
+            Your Cart
+          </h2>
+          <Button variant="ghost" size="sm" onClick={onClose} className="text-gray-600 dark:text-gray-300">
             <X className="w-5 h-5" />
           </Button>
         </div>
@@ -41,14 +46,19 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         <div className="flex-1 overflow-y-auto p-6">
           {state.items.length === 0 ? (
             <div className="text-center py-12">
-              <ShoppingBag className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 font-poppins">Your cart is empty</p>
-              <p className="text-sm text-gray-400 mt-2">Add some delicious items to get started!</p>
+              <ShoppingBag className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <p className="text-gray-500 dark:text-gray-400 font-poppins">Your cart is empty</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
+                Add some delicious items to get started!
+              </p>
             </div>
           ) : (
             <div className="space-y-4">
               {state.items.map((item) => (
-                <div key={item.id} className="bg-gray-50 rounded-xl p-4">
+                <div
+                  key={item.id}
+                  className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4"
+                >
                   <div className="flex items-start space-x-3">
                     <img
                       src={item.image || "/placeholder.svg"}
@@ -56,8 +66,12 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       className="w-16 h-16 object-cover rounded-lg"
                     />
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 font-poppins">{item.name}</h3>
-                      <p className="text-sm text-gray-600">{item.restaurantName}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-gray-100 font-poppins">
+                        {item.name}
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {item.restaurantName}
+                      </p>
                       <p className="text-lg font-bold text-teal-600 mt-1">₹{item.price}</p>
                     </div>
                     <Button
@@ -76,21 +90,25 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                         variant="outline"
                         size="sm"
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-8 h-8 p-0"
+                        className="w-8 h-8 p-0 border-gray-300 dark:border-gray-600 dark:text-gray-200"
                       >
                         <Minus className="w-3 h-3" />
                       </Button>
-                      <span className="font-semibold w-8 text-center">{item.quantity}</span>
+                      <span className="font-semibold w-8 text-center text-gray-900 dark:text-gray-100">
+                        {item.quantity}
+                      </span>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-8 h-8 p-0"
+                        className="w-8 h-8 p-0 border-gray-300 dark:border-gray-600 dark:text-gray-200"
                       >
                         <Plus className="w-3 h-3" />
                       </Button>
                     </div>
-                    <p className="font-bold text-gray-900">₹{item.price * item.quantity}</p>
+                    <p className="font-bold text-gray-900 dark:text-gray-100">
+                      ₹{item.price * item.quantity}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -100,8 +118,8 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
         {/* Footer */}
         {state.items.length > 0 && (
-          <div className="border-t p-6 space-y-4">
-            <div className="flex items-center justify-between text-xl font-bold">
+          <div className="border-t border-gray-200 dark:border-gray-700 p-6 space-y-4">
+            <div className="flex items-center justify-between text-xl font-bold text-gray-900 dark:text-gray-100">
               <span>Total:</span>
               <span className="text-teal-600">₹{state.total}</span>
             </div>
