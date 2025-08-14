@@ -33,21 +33,22 @@ export default function Header() {
             {/* Logo and Location */}
             <div className="flex items-center space-x-4">
               <Link href="/" className="flex items-center group ml-2">
-                <div className="relative w-12 h-12 rounded-xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:rotate-[2deg]">
+                <div className="relative w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-lg transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-[3deg]">
                   <Image
                     src="/logo.png"
                     alt="Shwikky Logo"
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="object-cover transition-transform duration-500 group-hover:scale-125"
                   />
                 </div>
               </Link>
 
-              <div className="hidden md:block">
+              <div className="hidden md:block text-gray-800 dark:text-gray-200">
                 <LocationDropdown />
               </div>
             </div>
 
+            {/* Center Search */}
             <div className="flex-1 max-w-md mx-6">
               <SearchDropdown />
             </div>
@@ -64,7 +65,7 @@ export default function Header() {
               <Button
                 variant="ghost"
                 onClick={() => setIsAuthOpen(true)}
-                className="flex items-center space-x-2 text-gray-700 hover:text-teal-600 dark:text-gray-300 dark:hover:text-green-400 transition-colors duration-200"
+                className="flex items-center space-x-2 text-gray-700 hover:text-[#25c2af] dark:text-gray-300 dark:hover:text-[#25c2af] transition-colors duration-200"
               >
                 <User className="w-5 h-5" />
                 <span className="hidden sm:block">Sign In</span>
@@ -72,13 +73,13 @@ export default function Header() {
 
               <Button
                 variant="ghost"
-                className="flex items-center space-x-2 text-gray-700 hover:text-teal-600 dark:text-gray-300 dark:hover:text-green-400 relative transition-colors duration-200"
+                className="flex items-center space-x-2 text-gray-700 hover:text-[#25c2af] dark:text-gray-300 dark:hover:text-[#25c2af] relative transition-colors duration-200"
                 onClick={() => setIsCartOpen(true)}
               >
                 <ShoppingCart className="w-5 h-5" />
                 <span className="hidden sm:block">Cart</span>
                 {isLoaded && state.itemCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 bg-teal-500 dark:bg-green-600 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center animate-bounce">
+                  <Badge className="absolute -top-1 -right-1 bg-[#25c2af] text-white text-xs w-6 h-6 rounded-full flex items-center justify-center animate-bounce">
                     {state.itemCount}
                   </Badge>
                 )}
