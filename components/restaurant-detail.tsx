@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import MenuSection from "@/components/menu-section"
 import Link from "next/link"
-import { supabase } from "@/lib/supabase/client"
 import { restaurantsData } from "@/data/restaurants"
 import type { RestaurantData } from "@/types/restaurant"
 
@@ -22,103 +21,83 @@ export default function RestaurantDetail({ restaurantId }: RestaurantDetailProps
   const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
-    async function fetchRestaurantDetails() {
-      try {
-        setLoading(true)
+    setLoading(true)
 
-        const { data: restaurantData, error: restaurantError } = await supabase
-          .from("restaurants")
-          .select("*")
-          .eq("id", restaurantId)
+    const localRestaurant = restaurantsData.find((r) => r.id === restaurantId)
 
-        if (restaurantError || !restaurantData || restaurantData.length === 0) {
-          console.log("Falling back to local data...")
-
-          // Use correct variable name for local restaurant data
-          const localRestaurant = restaurantsData.find((r) => r.id === restaurantId)
-
-          if (!localRestaurant) {
-            throw new Error("Restaurant not found")
-          }
-
-          // Map local data structure to expected interface
-          const formattedRestaurant: RestaurantData = {
-            id: localRestaurant.id,
-            name: localRestaurant.name,
-            rating: localRestaurant.rating,
-            totalRatings: localRestaurant.ratingCount,
-            priceForTwo: `₹${localRestaurant.costForTwo} for two`,
-            cuisine: localRestaurant.cuisine.join(", "),
-            outlet: localRestaurant.address,
-            deliveryTime: localRestaurant.deliveryTime,
-            image: localRestaurant.image,
-            deals: [
-              {
-                id: 1,
-                title: "Welcome Offer",
-                subtitle: "GET 50% OFF",
-                icon: "%",
-                color: "bg-green-100 text-green-600",
-              },
-              {
-                id: 2,
-                title: "Flat ₹75 Off",
-                subtitle: "USE FLAT75",
-                icon: "🏷️",
-                color: "bg-orange-100 text-orange-600",
-              },
-            ],
-            topPicks: localRestaurant.menu.slice(0, 2).map((item) => ({
-              id: item.id,
-              name: item.name,
-              description: item.description,
-              price: item.price,
-              image: item.image,
-              veg: item.veg,
-            })),
-            menu: [
-              {
-                category: "Menu",
-                itemCount: localRestaurant.menu.length,
-                items: localRestaurant.menu.map((item) => ({
-                  id: item.id,
-                  name: item.name,
-                  description: item.description,
-                  price: item.price,
-                  rating: item.rating || 4.0,
-                  ratingCount: item.ratingCount || 100,
-                  image: item.image,
-                  veg: item.veg,
-                  customizable: item.customizable || false,
-                  bestseller: item.bestseller || false,
-                })),
-              },
-            ],
-          }
-
-          setRestaurant(formattedRestaurant)
-          setLoading(false)
-          return
-        }
-
-        // ... existing code for database data handling ...
-      } catch (e: any) {
-        setError(e.message)
-        console.error("Failed to fetch restaurant details:", e)
-      } finally {
-        setLoading(false)
-      }
+    if (!localRestaurant) {
+      setError("Restaurant not found")
+      setLoading(false)
+      return
     }
-    fetchRestaurantDetails()
+
+    const formattedRestaurant: RestaurantData = {
+      id: localRestaurant.id,
+      name: localRestaurant.name,
+      rating: localRestaurant.rating,
+      totalRatings: localRestaurant.ratingCount,
+      priceForTwo: `₹${localRestaurant.costForTwo} for two`,
+      cuisine: localRestaurant.cuisine.join(", "),
+      outlet: localRestaurant.address,
+      deliveryTime: localRestaurant.deliveryTime,
+      image: localRestaurant.image,
+      deals: [
+        {
+          id: 1,
+          title: "Welcome Offer",
+          subtitle: "GET 50% OFF",
+          icon: "%",
+          color: "bg-green-100 text-green-600",
+        },
+        {
+          id: 2,
+          title: "Flat ₹75 Off",
+          subtitle: "USE FLAT75",
+          icon: "🏷️",
+          color: "bg-orange-100 text-orange-600",
+        },
+      ],
+      topPicks: localRestaurant.menu.slice(0, 2).map((item) => ({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        image: item.image,
+        veg: item.veg,
+      })),
+      menu: [
+        {
+          category: "Menu",
+          itemCount: localRestaurant.menu.length,
+          items: localRestaurant.menu.map((item) => ({
+            id: item.id,
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            rating: item.rating || 4.0,
+            ratingCount: item.ratingCount || 100,
+            image: item.image,
+            veg: item.veg,
+            customizable: item.customizable || false,
+            bestseller: item.bestseller || false,
+          })),
+        },
+      ],
+    }
+
+    setRestaurant(formattedRestaurant)
+    setLoading(false)
   }, [restaurantId])
 
   if (loading) return <div className="text-center py-12">Loading restaurant details...</div>
+
   if (error)
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center text-red-500 font-bold">
         Error loading restaurant details: {error}
       </div>
     )
+
   if (!restaurant) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
