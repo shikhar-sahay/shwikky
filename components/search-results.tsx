@@ -1,61 +1,135 @@
 "use client"
 
+import { useState, useMemo } from "react"
 import { ArrowLeft, X, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
+import { useCart } from "@/contexts/cart-context"
+import { restaurantsData } from "@/data/restaurants"
 
-const searchResults = [
-  {
-    id: 1,
-    restaurant: "Burger King",
-    rating: 4.4,
-    time: "25-30 MINS",
-    item: "Crispy Chicken Burger",
-    price: "₹99",
-    image: "/images/chicken-burger.png",
-    customizable: true,
-    veg: false,
-  },
-  {
-    id: 2,
-    restaurant: "Domino's Pizza",
-    rating: 4.3,
-    time: "25-30 MINS",
-    item: "Burger Pizza - Premium Veg",
-    price: "₹155",
-    image: "/images/pizza-slice.png",
-    customizable: false,
-    veg: true,
-  },
-  {
-    id: 3,
-    restaurant: "Domino's Pizza",
-    rating: 4.3,
-    time: "25-30 MINS",
-    item: "Margherita Pizza",
-    price: "₹129",
-    image: "/images/dominos-pizza.png",
-    customizable: true,
-    veg: true,
-  },
-  {
-    id: 4,
-    restaurant: "Crispy delight",
-    rating: 3.8,
-    time: "40-50 MINS",
-    item: "Chicken Burger Combo",
-    price: "₹199",
-    image: "/images/burger-king.png",
-    customizable: false,
-    veg: false,
-  },
+interface MenuItemWithRestaurant {
+  id: string
+  name: string
+  price: number
+  veg: boolean
+  customizable: boolean
+  image: string
+  restaurantId: string
+  restaurantName: string
+  restaurantImage: string
+  rating?: number
+  ratingCount?: number
+  bestseller?: boolean
+}
+
+const filters = [
+  { id: "veg", label: "Veg", type: "dietary" },
+  { id: "non-veg", label: "Non-Veg", type: "dietary" },
+  { id: "bestseller", label: "Bestseller", type: "tag" },
+  { id: "customizable", label: "Customizable", type: "tag" },
+  { id: "under-200", label: "Under ₹200", type: "price" },
+  { id: "250-plus", label: "₹250+", type: "price" },
 ]
 
-const filters = ["Fast Delivery", "Veg", "Non-Veg", "Rated 4+", "Rs 100-Rs 250", "Rs 250+"]
-
 export default function SearchResults() {
+  const [searchQuery, setSearchQuery] = useState("")
+  const [activeFilters, setActiveFilters] = useState<string[]>([])
+  const [activeTab, setActiveTab] = useState<"dishes" | "restaurants">("dishes")
+  const { dispatch } = useCart()
+
+  const allMenuItems: MenuItemWithRestaurant[] = useMemo(() => {
+    return restaurantsData.flatMap((restaurant) =>
+      restaurant.menu.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        veg: item.veg,
+        customizable: item.customizable || false,
+        image: item.image || restaurant.image,
+        restaurantId: restaurant.id,
+        restaurantName: restaurant.name,
+        restaurantImage: restaurant.image,
+        rating: item.rating,
+        ratingCount: item.ratingCount,
+        bestseller: item.bestseller,
+      }))
+    )
+  }, [])
+
+  const filteredResults = useMemo(() => {
+    let items = allMenuItems
+
+    if (searchQuery) {
+      items = items.filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    }
+
+    activeFilters.forEach((filter) => {
+      switch (filter) {
+        case "veg":
+          items = items.filter((item) => item.veg)
+          break
+        case "non-veg":
+          items = items.filter((item) => !item.veg)
+          break
+        case "bestseller":
+          items = items.filter((item) => item.bestseller)
+          break
+        case "customizable":
+          items = items.filter((item) => item.customizable)
+          break
+        case "under-200":
+          items = items.filter((item) => item.price < 200)
+          break
+        case "250-plus":
+          items = items.filter((item) => item.price >= 250)
+          break
+      }
+    })
+
+    return items
+  }, [searchQuery, activeFilters, allMenuItems])
+
+  const autocompleteSuggestions = useMemo(() => {
+    if (!searchQuery) return []
+    const uniqueNames = Array.from(
+      new Set(
+        allMenuItems
+          .filter((item) =>
+            item.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .map((item) => item.name)
+      )
+    )
+    return uniqueNames.slice(0, 5)
+  }, [searchQuery, allMenuItems])
+
+  const toggleFilter = (filterId: string) => {
+    setActiveFilters((prev) =>
+      prev.includes(filterId)
+        ? prev.filter((f) => f !== filterId)
+        : [...prev, filterId]
+    )
+  }
+
+  const addToCart = (item: MenuItemWithRestaurant) => {
+    dispatch({
+      type: "ADD_ITEM",
+      payload: {
+        id: item.id,
+        restaurantId: item.restaurantId,
+        restaurantName: item.restaurantName,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        veg: item.veg,
+      },
+    })
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Search Header */}
@@ -63,61 +137,99 @@ export default function SearchResults() {
         <Button variant="ghost" size="sm" className="p-2">
           <ArrowLeft className="w-4 h-4" />
         </Button>
-
         <div className="flex-1 relative">
-          <Input defaultValue="burger" className="pr-10 border-gray-300 focus:border-teal-500 focus:ring-teal-500" />
-          <Button variant="ghost" size="sm" className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1">
-            <X className="w-4 h-4" />
-          </Button>
+          <Input
+            placeholder="Search for dishes or restaurants"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pr-10 border-gray-300 focus:border-teal-500 focus:ring-teal-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-teal-400 dark:focus:ring-teal-400"
+          />
+          {searchQuery && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1"
+              onClick={() => setSearchQuery("")}
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          )}
+
+          {/* Autocomplete */}
+          {autocompleteSuggestions.length > 0 && (
+            <div className="absolute top-full left-0 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md mt-1 z-10 shadow-md">
+              {autocompleteSuggestions.map((suggestion) => (
+                <div
+                  key={suggestion}
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
+                  onClick={() => setSearchQuery(suggestion)}
+                >
+                  {suggestion}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Search Tabs */}
+      {/* Tabs */}
       <div className="flex space-x-4 mb-6">
-        <Badge variant="outline" className="px-4 py-2 cursor-pointer">
+        <Badge
+          variant={activeTab === "restaurants" ? "default" : "outline"}
+          className="px-4 py-2 cursor-pointer"
+          onClick={() => setActiveTab("restaurants")}
+        >
           Restaurants
         </Badge>
-        <Badge className="px-4 py-2 bg-gray-900 text-white cursor-pointer">Dishes</Badge>
+        <Badge
+          variant={activeTab === "dishes" ? "default" : "outline"}
+          className="px-4 py-2 cursor-pointer"
+          onClick={() => setActiveTab("dishes")}
+        >
+          Dishes
+        </Badge>
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3 mb-8">
-        <Button variant="outline" className="flex items-center space-x-2 bg-transparent">
-          <span>Sort by</span>
-        </Button>
-
         {filters.map((filter) => (
           <Badge
-            key={filter}
+            key={filter.id}
             variant="outline"
-            className="px-3 py-2 cursor-pointer hover:bg-teal-50 hover:border-teal-300 hover:text-teal-700"
+            className={`px-3 py-2 cursor-pointer transition ${
+              activeFilters.includes(filter.id)
+                ? "bg-teal-500 text-white border-teal-500"
+                : "hover:bg-teal-50 hover:border-teal-300 hover:text-teal-700 dark:hover:bg-gray-700 dark:hover:text-teal-400"
+            }`}
+            onClick={() => toggleFilter(filter.id)}
           >
-            {filter}
+            {filter.label}
           </Badge>
         ))}
       </div>
 
-      {/* Search Results */}
+      {/* Results */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {searchResults.map((result) => (
+        {filteredResults.map((item) => (
           <Card
-            key={result.id}
-            className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in-up border-0 shadow-lg"
+            key={`${item.restaurantId}-${item.id}`}
+            className="p-6 hover:shadow-xl transition-all duration-300 border-0 shadow-lg dark:bg-gray-800 dark:text-white"
           >
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h3 className="font-medium text-gray-900 mb-1">By {result.restaurant}</h3>
-                <div className="flex items-center space-x-4 text-sm text-gray-600">
+                <h3 className="font-medium text-gray-900 dark:text-white mb-1">
+                  By {item.restaurantName}
+                </h3>
+                <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
                   <div className="flex items-center space-x-1">
                     <Star className="w-4 h-4 fill-current text-green-500" />
-                    <span>{result.rating}</span>
+                    <span>{item.rating || 4.0}</span>
                   </div>
-                  <span>• {result.time}</span>
+                  <span>
+                    • {restaurantsData.find((r) => r.id === item.restaurantId)?.deliveryTime || "25-30 MINS"}
+                  </span>
                 </div>
               </div>
-              <Button variant="ghost" size="sm" className="p-2">
-                <ArrowLeft className="w-4 h-4 rotate-180" />
-              </Button>
             </div>
 
             <div className="flex items-center justify-between">
@@ -125,29 +237,23 @@ export default function SearchResults() {
                 <div className="flex items-center space-x-2 mb-2">
                   <div
                     className={`w-4 h-4 border-2 flex items-center justify-center ${
-                      result.veg ? "border-green-500" : "border-red-500"
+                      item.veg ? "border-green-500" : "border-red-500"
                     }`}
                   >
-                    <div className={`w-2 h-2 rounded-full ${result.veg ? "bg-green-500" : "bg-red-500"}`} />
+                    <div className={`w-2 h-2 rounded-full ${item.veg ? "bg-green-500" : "bg-red-500"}`} />
                   </div>
-                  <h4 className="font-medium text-gray-900">{result.item}</h4>
+                  <h4 className="font-medium text-gray-900 dark:text-white">{item.name}</h4>
                 </div>
-
-                <p className="text-lg font-bold text-gray-900 mb-2">{result.price}</p>
-
-                <Button variant="ghost" className="text-gray-600 text-sm p-0 h-auto mb-4">
-                  More Details →
+                <p className="text-lg font-bold text-gray-900 dark:text-white mb-2">₹{item.price}</p>
+                <Button onClick={() => addToCart(item)} className="bg-teal-500 hover:bg-teal-600 text-white px-8">
+                  ADD
                 </Button>
-
-                <Button className="bg-teal-500 hover:bg-teal-600 text-white px-8">ADD</Button>
-
-                {result.customizable && <p className="text-xs text-gray-500 mt-2">Customisable</p>}
+                {item.customizable && <p className="text-xs text-gray-500 dark:text-gray-300 mt-2">Customisable</p>}
               </div>
-
               <div className="ml-4">
                 <img
-                  src={result.image || "/placeholder.svg"}
-                  alt={result.item}
+                  src={item.image || "/placeholder.svg"}
+                  alt={item.name}
                   className="w-24 h-24 object-cover rounded-lg"
                 />
               </div>
