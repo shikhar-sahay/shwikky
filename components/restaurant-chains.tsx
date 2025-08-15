@@ -28,7 +28,7 @@ export default function RestaurantChains() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold text-black dark:text-[#25c2af] mb-8 font-poppins animate-fade-in-up">
-            Top restaurant chains
+            Top restaurant chains near you
           </h2>
 
           <div className="flex space-x-2 animate-slide-in-right">

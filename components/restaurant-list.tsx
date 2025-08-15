@@ -26,11 +26,14 @@ const sortOptions = [
   { id: "cost-high-low", label: "Cost: High to Low" },
 ]
 
+// IDs of top restaurants that appear in the top section
+const topRestaurantIds = ["burger-king", "dominos", "kfc"] // update this with all top restaurant IDs
+
 export default function RestaurantList() {
   const { selectedCity } = useLocation()
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(restaurantsData)
   const [activeFilters, setActiveFilters] = useState<string[]>([])
-  const [sortBy, setSortBy] = useState("relevance")
+  const [sortBy, setSortBy] = useState("rating")
   const [showSortDropdown, setShowSortDropdown] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -40,7 +43,6 @@ export default function RestaurantList() {
 
   const applyFilters = async (filters: string[], currentSortBy: string) => {
     setIsLoading(true)
-
     await new Promise((resolve) => setTimeout(resolve, 300))
 
     let filtered = [...restaurantsData]
@@ -71,19 +73,21 @@ export default function RestaurantList() {
             filtered = filtered.filter((restaurant) => restaurant.rating >= 4.0)
             break
           case "veg":
-            filtered = filtered.filter((restaurant) => restaurant.menu && restaurant.menu.some((item) => item.veg))
+            filtered = filtered.filter((restaurant) =>
+              restaurant.menu?.some((item) => item.veg),
+            )
             break
           case "price":
             if (filter === "under-300") {
               filtered = filtered.filter((restaurant) => restaurant.costForTwo < 300)
             } else if (filter === "300-600") {
-              filtered = filtered.filter((restaurant) => restaurant.costForTwo >= 300 && restaurant.costForTwo <= 600)
+              filtered = filtered.filter(
+                (restaurant) => restaurant.costForTwo >= 300 && restaurant.costForTwo <= 600,
+              )
             }
             break
           case "offers":
-            filtered = filtered.filter(
-              (restaurant) => restaurant.rating >= 4.2, // High-rated restaurants likely have offers
-            )
+            filtered = filtered.filter((restaurant) => restaurant.rating >= 4.2)
             break
         }
       })
@@ -106,12 +110,23 @@ export default function RestaurantList() {
           filtered.sort((a, b) => b.costForTwo - a.costForTwo)
           break
         default:
-          // Keep original order for relevance
           break
       }
+
+      // Move top restaurants to the end
+      const topRestaurants: Restaurant[] = []
+      filtered = filtered.filter((restaurant) => {
+        if (topRestaurantIds.includes(restaurant.id)) {
+          topRestaurants.push(restaurant)
+          return false
+        }
+        return true
+      })
+      filtered = [...filtered, ...topRestaurants]
+
     } catch (error) {
       console.error("Error applying filters:", error)
-      filtered = restaurantsData // Fallback to original data
+      filtered = restaurantsData
     }
 
     setFilteredRestaurants(filtered)
@@ -138,6 +153,7 @@ export default function RestaurantList() {
           Restaurants with online food delivery in {selectedCity}
         </h2>
 
+        {/* Filters and Sort */}
         <div className="flex flex-wrap gap-3 mb-8 animate-slide-in-right">
           <Button
             variant="outline"
@@ -193,6 +209,7 @@ export default function RestaurantList() {
           ))}
         </div>
 
+        {/* Active Filters */}
         {activeFilters.length > 0 && (
           <div className="flex items-center space-x-2 mb-6 animate-slide-in-left">
             <span className="text-sm text-muted-foreground">Active filters:</span>
@@ -220,6 +237,7 @@ export default function RestaurantList() {
           </div>
         )}
 
+        {/* Restaurants Count */}
         <div className="mb-6">
           <p className="text-muted-foreground animate-fade-in-up">
             {isLoading ? (
@@ -230,6 +248,7 @@ export default function RestaurantList() {
           </p>
         </div>
 
+        {/* Restaurant Cards */}
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[...Array(8)].map((_, index) => (
@@ -251,6 +270,7 @@ export default function RestaurantList() {
           </div>
         )}
 
+        {/* No Restaurants Found */}
         {!isLoading && filteredRestaurants.length === 0 && (
           <div className="text-center py-12 animate-fade-in-up">
             <div className="text-6xl mb-4 animate-bounce-gentle">🍽️</div>
