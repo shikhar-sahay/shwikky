@@ -27,7 +27,12 @@ export default function RestaurantCard({ restaurant, index = 0 }: RestaurantCard
   return (
     <Link href={`/restaurant/${restaurant.id}`}>
       <Card
-        className={`overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.02] cursor-pointer border-0 shadow-lg bg-card dark:bg-card text-card-foreground animate-fade-in-up stagger-${Math.min(index + 1, 6)}`}
+        className={`overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.02] cursor-pointer border-0 shadow-lg bg-card dark:bg-card text-card-foreground
+          animate-fade-in-up stagger-${Math.min(index + 1, 6)}
+          dark:shadow-[0_0_15px_rgba(37,194,175,0.3)] 
+          dark:hover:shadow-[0_0_25px_rgba(37,194,175,0.6)] 
+          dark:border dark:border-teal-700 dark:border-opacity-30 
+          dark:rounded-lg`}
       >
         <div className="relative overflow-hidden group">
           <img

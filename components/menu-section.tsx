@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Star, ChevronUp, ChevronDown, Plus } from "lucide-react"
+import { Star, ChevronUp, ChevronDown, Plus, Minus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/contexts/cart-context"

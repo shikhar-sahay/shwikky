@@ -156,6 +156,16 @@ export default function RestaurantDetail({ restaurantId }: RestaurantDetailProps
     )
   }
 
+  // Filter menu based on search query
+  const filteredMenu = restaurant.menu
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    }))
+    .filter((section) => section.items.length > 0)
+
   return (
     <div className="bg-background min-h-screen text-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -355,8 +365,8 @@ export default function RestaurantDetail({ restaurantId }: RestaurantDetailProps
           </div>
         </div>
 
-        {/* Menu Sections */}
-        {restaurant.menu.map((section) => (
+        {/* Filtered Menu Sections */}
+        {filteredMenu.map((section) => (
           <MenuSection
             key={section.category}
             section={section}
