@@ -117,13 +117,6 @@ export default function RestaurantDetail({ restaurantId }: RestaurantDetailProps
     })
   }
 
-  const removeFromCart = (itemId: string) => {
-    dispatch({
-      type: "REMOVE_ITEM",
-      payload: itemId,
-    })
-  }
-
   if (loading)
     return <div className="text-center py-12 text-foreground">Loading restaurant details...</div>
 
@@ -293,9 +286,8 @@ export default function RestaurantDetail({ restaurantId }: RestaurantDetailProps
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-3">
                           <div
-                            className={`w-4 h-4 border-2 flex items-center justify-center ${
-                              item.veg ? "border-green-400" : "border-red-400"
-                            }`}
+                            className={`w-4 h-4 border-2 flex items-center justify-center ${item.veg ? "border-green-400" : "border-red-400"
+                              }`}
                           >
                             <div className={`w-2 h-2 rounded-full ${item.veg ? "bg-green-400" : "bg-red-400"}`} />
                           </div>
@@ -315,19 +307,21 @@ export default function RestaurantDetail({ restaurantId }: RestaurantDetailProps
                         ) : (
                           <div className="flex items-center space-x-2">
                             <Button
-                              onClick={() => removeFromCart(item.id)}
-                              className="bg-card hover:bg-card/90 px-3 py-1 rounded-lg"
+                              onClick={() => dispatch({ type: "DECREMENT_ITEM", payload: item.id })}
+                              className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-3 py-1 rounded-lg transition-colors"
                             >
-                              <Minus className="w-4 h-4" />
+                              <Minus className="w-4 h-4 text-gray-800 dark:text-white" />
                             </Button>
+
                             <span className="px-3 py-1 font-semibold bg-popover rounded-lg transition-transform animate-pulse">
                               {quantity}
                             </span>
+
                             <Button
                               onClick={() => addToCart(item)}
-                              className="bg-card hover:bg-card/90 px-3 py-1 rounded-lg"
+                              className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-3 py-1 rounded-lg transition-colors"
                             >
-                              <Plus className="w-4 h-4" />
+                              <Plus className="w-4 h-4 text-gray-800 dark:text-white" />
                             </Button>
                           </div>
                         )}

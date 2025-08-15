@@ -25,6 +25,7 @@ type CartAction =
   | { type: "ADD_ITEM"; payload: Omit<CartItem, "quantity"> }
   | { type: "REMOVE_ITEM"; payload: string }
   | { type: "UPDATE_QUANTITY"; payload: { id: string; quantity: number } }
+  | { type: "DECREMENT_ITEM"; payload: string }
   | { type: "CLEAR_CART" }
   | { type: "LOAD_CART"; payload: CartItem[] }
 
@@ -42,7 +43,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       let newItems: CartItem[]
       if (existingItem) {
         newItems = state.items.map((item) =>
-          item.id === action.payload.id ? { ...item, quantity: item.quantity + 1 } : item,
+          item.id === action.payload.id ? { ...item, quantity: item.quantity + 1 } : item
         )
       } else {
         newItems = [...state.items, { ...action.payload, quantity: 1 }]
@@ -52,6 +53,26 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const itemCount = newItems.reduce((sum, item) => sum + item.quantity, 0)
 
       return { items: newItems, total, itemCount }
+    }
+
+    case "DECREMENT_ITEM": {
+      const existingItem = state.items.find((item) => item.id === action.payload)
+      if (!existingItem) return state
+
+      let newItems: CartItem[]
+      if (existingItem.quantity === 1) {
+        // Remove item if quantity reaches 0
+        newItems = state.items.filter((item) => item.id !== action.payload)
+      } else {
+        newItems = state.items.map((item) =>
+          item.id === action.payload ? { ...item, quantity: item.quantity - 1 } : item
+        )
+      }
+
+      const total = newItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+      const itemCount = newItems.reduce((sum, item) => sum + item.quantity, 0)
+
+      return { ...state, items: newItems, total, itemCount }
     }
 
     case "REMOVE_ITEM": {
@@ -65,7 +86,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case "UPDATE_QUANTITY": {
       const newItems = state.items
         .map((item) =>
-          item.id === action.payload.id ? { ...item, quantity: Math.max(0, action.payload.quantity) } : item,
+          item.id === action.payload.id ? { ...item, quantity: Math.max(0, action.payload.quantity) } : item
         )
         .filter((item) => item.quantity > 0)
 

@@ -34,18 +34,11 @@ export default function MenuSection({ section, restaurantId, restaurantName }: M
   const { dispatch, state: { items: cartItems } } = useCart()
 
   const addToCart = (item: MenuItem) => {
-    dispatch({
-      type: "ADD_ITEM",
-      payload: {
-        id: item.id,
-        restaurantId,
-        restaurantName,
-        name: item.name,
-        price: item.price,
-        image: item.image,
-        veg: item.veg,
-      },
-    })
+    dispatch({ type: "ADD_ITEM", payload: { ...item, veg: item.veg, image: item.image, restaurantId, restaurantName } })
+  }
+
+  const decrementItem = (item: MenuItem) => {
+    dispatch({ type: "DECREMENT_ITEM", payload: item.id })
   }
 
   return (
@@ -59,11 +52,7 @@ export default function MenuSection({ section, restaurantId, restaurantName }: M
           {section.category} ({section.itemCount})
         </h3>
         <div className="p-2 rounded-full hover:bg-popover transition-colors">
-          {isExpanded ? (
-            <ChevronUp className="w-5 h-5 text-foreground" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-foreground" />
-          )}
+          {isExpanded ? <ChevronUp className="w-5 h-5 text-foreground" /> : <ChevronDown className="w-5 h-5 text-foreground" />}
         </div>
       </div>
 
@@ -77,24 +66,14 @@ export default function MenuSection({ section, restaurantId, restaurantName }: M
             return (
               <div
                 key={item.id}
-                className={`p-6 hover:bg-card/90 transition-colors ${
-                  index !== section.items.length - 1 ? "border-b border-border" : ""
-                }`}
+                className={`p-6 hover:bg-card/90 transition-colors ${index !== section.items.length - 1 ? "border-b border-border" : ""}`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     {/* Veg / Bestseller */}
                     <div className="flex items-center space-x-3 mb-3">
-                      <div
-                        className={`w-5 h-5 border-2 flex items-center justify-center ${
-                          item.veg ? "border-green-400" : "border-red-400"
-                        }`}
-                      >
-                        <div
-                          className={`w-2.5 h-2.5 rounded-full ${
-                            item.veg ? "bg-green-400" : "bg-red-400"
-                          }`}
-                        />
+                      <div className={`w-5 h-5 border-2 flex items-center justify-center ${item.veg ? "border-green-400" : "border-red-400"}`}>
+                        <div className={`w-2.5 h-2.5 rounded-full ${item.veg ? "bg-green-400" : "bg-red-400"}`} />
                       </div>
                       {item.bestseller && (
                         <Badge className="bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs px-2 py-1">
@@ -117,31 +96,31 @@ export default function MenuSection({ section, restaurantId, restaurantName }: M
 
                     <p className="text-muted-foreground text-sm mb-6 leading-relaxed">{item.description}</p>
 
+                    {/* ADD / Increment-Decrement */}
                     <div className="flex items-center space-x-4">
                       {quantity === 0 ? (
                         <Button
                           onClick={() => addToCart(item)}
-                          className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-2 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-2 font-semibold rounded-lg shadow-lg transition-all duration-200"
                         >
-                          <Plus className="w-4 h-4 mr-2" />
                           ADD
                         </Button>
                       ) : (
                         <div className="flex items-center space-x-2">
                           <Button
-                            onClick={() => dispatch({ type: "REMOVE_ITEM", payload: item.id })}
-                            className="bg-popover hover:bg-popover/90 px-3 py-1 rounded-lg"
+                            onClick={() => decrementItem(item)}
+                            className="bg-popover hover:bg-popover/90 px-3 py-1 rounded-lg transition-transform hover:scale-105"
                           >
-                            <Minus className="w-4 h-4" />
+                            <Minus className="w-4 h-4 text-black dark:text-white" />
                           </Button>
-                          <span className="px-3 py-1 font-semibold bg-card rounded-lg transition-transform animate-pulse">
-                            {quantity}
-                          </span>
+
+                          <span className="px-3 py-1 font-semibold bg-card rounded-lg">{quantity}</span>
+
                           <Button
                             onClick={() => addToCart(item)}
-                            className="bg-popover hover:bg-popover/90 px-3 py-1 rounded-lg"
+                            className="bg-popover hover:bg-popover/90 px-3 py-1 rounded-lg transition-transform hover:scale-105"
                           >
-                            <Plus className="w-4 h-4" />
+                            <Plus className="w-4 h-4 text-black dark:text-white" />
                           </Button>
                         </div>
                       )}
