@@ -1412,7 +1412,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "punjabi-dhaba",
     name: "Punjabi Dhaba",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://content3.jdmagicbox.com/v2/comp/mumbai/h5/9999px416.x416.140315162519.a2h5/catalogue/aahar-punjabi-dhaba-vellore-ho-vellore-restaurants-bw74hqlaf4.jpg",
     rating: 4.4,
     ratingCount: "7K+",
     deliveryTime: "25-30 mins",
@@ -1476,7 +1476,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "ice-cream-parlor",
     name: "Baskin Robbins",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://b.zmtcdn.com/data/pictures/6/18739886/ebb1d9a745bc7f7e8c9b8e80f8bf1de1.jpg?fit=around|750:500&crop=750:500;*,*",
     rating: 4.3,
     ratingCount: "5K+",
     deliveryTime: "15-20 mins",
@@ -1541,7 +1541,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "japanese-kitchen",
     name: "Tokyo Kitchen",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/cf/1d/46/hot-sour-ramen.jpg?w=500&h=-1&s=1",
     rating: 4.2,
     ratingCount: "3K+",
     deliveryTime: "40-45 mins",
@@ -1605,7 +1605,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "mediterranean-grill",
     name: "Mediterranean Grill",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://fandoqny.com/wp-content/uploads/2023/04/EC57B597-6D1B-4013-BB0F-E02FBC104DF6-scaled.jpeg",
     rating: 4.1,
     ratingCount: "4K+",
     deliveryTime: "30-35 mins",
@@ -1669,7 +1669,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "bakery-cafe",
     name: "The Cake Shop",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://b.zmtcdn.com/data/reviews_photos/002/aa3fce0eb21439a5b4e7a0711f98e002_1505673739.jpg",
     rating: 4.3,
     ratingCount: "6K+",
     deliveryTime: "20-25 mins",
@@ -1733,7 +1733,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "healthy-bowls",
     name: "Fresh Bowl Co.",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://images.getbento.com/accounts/441cf16207103907108bde3b2ac84c59/media/images/68812Chicken_Shawarma.jpg?w=1800&fit=max&auto=compress,format&cs=origin&h=1800",
     rating: 4.2,
     ratingCount: "3K+",
     deliveryTime: "25-30 mins",
@@ -1797,7 +1797,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "street-food-corner",
     name: "Mumbai Street Food",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-674x446/07/bb/46/71.jpg",
     rating: 4.0,
     ratingCount: "8K+",
     deliveryTime: "20-25 mins",
@@ -1862,7 +1862,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "continental-kitchen",
     name: "Continental Kitchen",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://static.toiimg.com/photo/84288054.cms",
     rating: 4.3,
     ratingCount: "4K+",
     deliveryTime: "35-40 mins",
