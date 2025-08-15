@@ -28,7 +28,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "mcdonalds",
     name: "McDonald's",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://img-cdn.inc.com/image/upload/f_webp,q_auto,c_fit/images/panoramic/Inc.mcdonalds_544915_a4ltzz.jpg",
     rating: 4.2,
     ratingCount: "10K+",
     deliveryTime: "25-30 mins",
@@ -194,7 +194,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "kfc",
     name: "KFC",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://cdn4.singleinterface.com/files/enterprise/coverphoto/34404/KFC-Chizza-851x315px-2-19-06-25-07-27-24.jpg",
     rating: 4.1,
     ratingCount: "8K+",
     deliveryTime: "30-35 mins",
@@ -360,7 +360,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "pizza-hut",
     name: "Pizza Hut",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://www.yum.com/wps/wcm/connect/yumbrands/77ac5d27-1357-4792-9953-54b11f5ae7dd/yum-com-24-product-PH.jpg?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_5QC4HBC039RJ406SQH4UBH3695-77ac5d27-1357-4792-9953-54b11f5ae7dd-oXSxcXb",
     rating: 4.3,
     ratingCount: "12K+",
     deliveryTime: "35-40 mins",
@@ -526,7 +526,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "dominos",
     name: "Domino's Pizza",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://b.zmtcdn.com/data/pictures/chains/5/18739655/ce0341e58cf96f163101b4dff77ed938.jpg?fit=around|960:500&crop=960:500;*,*",
     rating: 4.2,
     ratingCount: "15K+",
     deliveryTime: "25-30 mins",
@@ -693,7 +693,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "subway",
     name: "Subway",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/5a/ab/9c/subway-eat-fresh.jpg?w=900&h=500&s=1",
     rating: 4.0,
     ratingCount: "6K+",
     deliveryTime: "20-25 mins",
@@ -858,7 +858,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "starbucks",
     name: "Starbucks",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://restaurantindia.s3.ap-south-1.amazonaws.com/s3fs-public/2025-04/Starbucks%20Menu%20Delhi.jpg",
     rating: 4.4,
     ratingCount: "9K+",
     deliveryTime: "15-20 mins",
@@ -1024,7 +1024,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "taco-bell",
     name: "Taco Bell",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://www.allrecipes.com/thmb/5vfVjThzZsweDidPCuRLZLVTut4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/ar-taste-test-taco-bell-unique-1-4x3-94016192e88a428f925c209fe29081a3.jpg",
     rating: 4.1,
     ratingCount: "7K+",
     deliveryTime: "20-25 mins",
@@ -1089,7 +1089,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "burger-king",
     name: "Burger King",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://b.zmtcdn.com/data/pictures/8/20874248/7d409dcc907adc733e291d4599aca522.jpg?fit=around|960:500&crop=960:500;*,*",
     rating: 4.0,
     ratingCount: "11K+",
     deliveryTime: "30-35 mins",
@@ -1153,7 +1153,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "chinese-wok",
     name: "Chinese Wok",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/e0839ff574213e6f35b3899ebf1fc597",
     rating: 4.2,
     ratingCount: "5K+",
     deliveryTime: "25-30 mins",
@@ -1218,7 +1218,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "biryani-house",
     name: "Biryani House",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://content.jdmagicbox.com/comp/def_content_category/the-biryani-house/panner-tikka-dum-biryani-scaled-the-biryani-house-2-bv5u1.jpg",
     rating: 4.5,
     ratingCount: "8K+",
     deliveryTime: "35-40 mins",
@@ -1283,7 +1283,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "south-indian-cafe",
     name: "South Indian Café",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://content.jdmagicbox.com/comp/def_content/south_indian_restaurants/default-south-indian-restaurants-14.jpg",
     rating: 4.3,
     ratingCount: "6K+",
     deliveryTime: "20-25 mins",
@@ -1348,7 +1348,7 @@ export const restaurantsData: Restaurant[] = [
   {
     id: "thai-express",
     name: "Thai Express",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "https://thaiexpress.ca/wp-content/uploads/2022/05/location-pages-image.jpg",
     rating: 4.1,
     ratingCount: "4K+",
     deliveryTime: "30-35 mins",
