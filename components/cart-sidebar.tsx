@@ -20,6 +20,11 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
     dispatch({ type: "REMOVE_ITEM", payload: id })
   }
 
+  // checkout redirect
+  const handleCheckout = () => {
+    window.location.href = "https://dscv.it/vibecoding-blog"
+  }
+
   if (!isOpen) return null
 
   return (
@@ -123,7 +128,10 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               <span>Total:</span>
               <span className="text-teal-600">₹{state.total}</span>
             </div>
-            <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white h-12 text-lg font-semibold">
+            <Button
+              onClick={handleCheckout}
+              className="w-full bg-teal-500 hover:bg-teal-600 text-white h-12 text-lg font-semibold"
+            >
               Proceed to Checkout
             </Button>
           </div>
