@@ -20,7 +20,6 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
     dispatch({ type: "REMOVE_ITEM", payload: id })
   }
 
-  // checkout redirect
   const handleCheckout = () => {
     window.location.href = "https://dscv.it/vibecoding-blog"
   }
@@ -29,15 +28,15 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
   return (
     <>
-      {/* Backdrop */}
+      {}
       <div
         className="fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity"
         onClick={onClose}
       />
 
-      {/* Sidebar */}
+      {}
       <div className="fixed right-0 top-0 h-full w-96 bg-white dark:bg-gray-900 shadow-2xl z-50 transform transition-transform duration-300 flex flex-col">
-        {/* Header */}
+        {}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl font-bold font-poppins text-gray-900 dark:text-gray-100">
             Your Cart
@@ -47,7 +46,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
           </Button>
         </div>
 
-        {/* Cart Items */}
+        {}
         <div className="flex-1 overflow-y-auto p-6">
           {state.items.length === 0 ? (
             <div className="text-center py-12">

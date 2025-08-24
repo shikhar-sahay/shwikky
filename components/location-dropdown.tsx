@@ -79,8 +79,7 @@ export default function LocationDropdown({ className }: LocationDropdownProps) {
       </Button>
 
       {isOpen && (
-        <Card className="absolute top-full left-0 mt-2 w-80 bg-white dark:bg-gray-800 shadow-2xl border-0 rounded-xl z-50 max-h-96 overflow-hidden">
-          {/* Search bar */}
+        <Card className="absolute top-full left-0 mt-2 w-80 sm:max-w-[calc(100vw-1rem)] sm:left-1/2 sm:-translate-x-1/2 bg-white dark:bg-gray-800 shadow-2xl border-0 rounded-xl z-50 max-h-96 overflow-hidden">
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
@@ -96,7 +95,6 @@ export default function LocationDropdown({ className }: LocationDropdownProps) {
           <div className="max-h-80 overflow-y-auto">
             {searchQuery.trim() === "" && (
               <>
-                {/* Popular Cities */}
                 <div className="p-4 border-b border-gray-200 dark:border-gray-700">
                   <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">Popular Cities</h3>
                   <div className="space-y-2">
@@ -116,7 +114,6 @@ export default function LocationDropdown({ className }: LocationDropdownProps) {
                   </div>
                 </div>
 
-                {/* Other Cities */}
                 <div className="p-4">
                   <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">Other Cities</h3>
                   <div className="space-y-2">
@@ -138,7 +135,6 @@ export default function LocationDropdown({ className }: LocationDropdownProps) {
               </>
             )}
 
-            {/* Search results */}
             {searchQuery.trim() && (
               <div className="p-4">
                 <div className="space-y-2">
