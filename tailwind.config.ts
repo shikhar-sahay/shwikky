@@ -69,7 +69,7 @@ const config: Config = {
           800: "#115e59",
           900: "#134e4a",
         },
-        tealCustom: "#25c2af", // added custom color
+        tealCustom: "#25c2af",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -85,15 +85,20 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        breathe: {
-          "0%, 100%": { transform: "scale(1)" },
-          "50%": { transform: "scale(1.05)" },
+        spinLogo: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        slideUp: {
+          "0%": { transform: "translateY(0%)" },
+          "100%": { transform: "translateY(-100%)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        breathe: "breathe 1.5s ease-in-out infinite",
+        spinLogo: "spinLogo 1.8s linear infinite",
+        slideUp: "slideUp 3.2s ease-in-out forwards",
       },
     },
   },
